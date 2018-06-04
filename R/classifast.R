@@ -6,7 +6,7 @@
 #' @examples hola
 #' @export
 
-classifast <- function(x, y, prob, type = "simple"){
+classifast <- function(x, y, prob = 0.65, type = "simple"){
 
   # Change the input x and y accordingly
 
@@ -67,20 +67,17 @@ classifast <- function(x, y, prob, type = "simple"){
   x.test <- x[test.i, ]
 
   # ------------------------- MODELS ------------------------------ #
-  return(list(x = x.train, y = x.test))
+  # For now, we will call all of them, in the future we will select
+  # which ones we want. Nonetheless, the lineal classificator
+  # wil always be called.
 
+  # Multinomial Logistic Regression
+  m.log <- m.logistic(train = x.train,
+                      test = x.test,
+                      formula = formula)
 
-
-
-
-
-
-
-
-
-
-
+  # --------------------- OUTPUT ------------------- #
+  return(structure(list(m.log = m.log),
+                   class = "classifast"))
 }
-
-
 
