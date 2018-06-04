@@ -8,7 +8,7 @@
 #' @examples Not yet
 #' @export
 
-classifast <- function(x, y, prob = 0.65, type = "simple"){
+classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
 
   # Change the input x and y accordingly
 
@@ -16,6 +16,15 @@ classifast <- function(x, y, prob = 0.65, type = "simple"){
   n <- nrow(x)
   p <- ncol(x)
 
+  if(timing == TRUE){
+    # ----------- Time Prediction
+    # Predicted time, given "n" and "p" and the methods available
+    # M.logistic: (p*6 + n*0.05) / 1000 seconds (fitted model:lm(t~p+n))
+    time.mlog =  (p * 6 + .05 * n) / 1000
+
+    time = time.mlog
+    message("The expected computation time is ", time, " s")
+  }
   # In case "y" is a data.frame, modify it accordingly
   if(is.data.frame(y)){
     y <- y[[1]]
@@ -79,17 +88,23 @@ classifast <- function(x, y, prob = 0.65, type = "simple"){
                       formula = formula)
 
   # --------------------- OUTPUT ------------------- #
-  return(structure(list(m.log = m.log),
+
+  # Invisible: Only if assigned you get this list of lists of info
+  invisible(structure(list(m.log = m.log),
                    class = "classifast"))
 }
 
 
-#' Compare different clasification methods on multivariante data
+#' Summary method for the objetc with class "classifast"
 #'
 #'
 #'
-#' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
-#' @param y A factor with the labels of the rows of x
-#' @return Not yet
-#' @examples Not yet
+#' @param x Object of class "classifast"
+#' @return Table with errors of different classifiers
 #' @export
+
+
+summary.classifast <- function(x){
+  # Still working on it
+  invisible(x)
+}
