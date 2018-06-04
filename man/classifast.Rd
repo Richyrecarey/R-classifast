@@ -4,7 +4,7 @@
 \alias{classifast}
 \title{Compare different clasification methods on multivariante data}
 \usage{
-classifast(x, y, prob = 0.65, type = "simple")
+classifast(x, y, prob = 0.65, type = "simple", timing = TRUE)
 }
 \arguments{
 \item{x}{Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)}

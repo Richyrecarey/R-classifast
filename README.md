@@ -1,5 +1,6 @@
-# My first R package
-This is the repository for my first package __classifast__. Given multivariate data and its correct labels, __classifast__ is a convenient way of testing various statistical classifiers on it, giving you a quick vision on which ones are the best for your specific problem. 
+# My first repository and R package
 
+The package `classifast` is a side project that my friend [Manuel](https://github.com/MVaamonde "Manuel's GitHub profile") and I are starting. Basicaly, the main goal is make a function that, given multivariate labeled data, gives you a quick overview of which classifiers are the best for problem (based on several error criterious).
 
+This minimal package is intended to be a project to both enhance our R skills and to make (hopefully) a usefull tool for Data Scientists. All help and feedback will be highly appreciated, so feel free to contact me on <richyrecarey@gmail.com> to get involved in the project.
 
