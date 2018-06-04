@@ -1,5 +1,7 @@
 #' Compare different clasification methods on multivariante data
 #'
+#'
+#'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
 #' @return Not yet
@@ -81,3 +83,13 @@ classifast <- function(x, y, prob = 0.65, type = "simple"){
                    class = "classifast"))
 }
 
+
+#' Compare different clasification methods on multivariante data
+#'
+#'
+#'
+#' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
+#' @param y A factor with the labels of the rows of x
+#' @return Not yet
+#' @examples Not yet
+#' @export

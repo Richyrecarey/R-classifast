@@ -1,12 +1,11 @@
 #' Apply logistic function to the data
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param train Data frame with train data
+#' @param test A number.
 #' @return The sum of \code{x} and \code{y}.
 #' @examples
-#' add(1, 1)
-#' add(10, 1)
-#' @export
+#' none
+#' @importFrom nnet multinom
 
 m.logistic <- function(train, test, formula){
   # We will be given 2 data.frames of train and test data

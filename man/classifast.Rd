@@ -2,9 +2,9 @@
 % Please edit documentation in R/classifast.R
 \name{classifast}
 \alias{classifast}
-\title{Add together two numbers.}
+\title{Compare different clasification methods on multivariante data}
 \usage{
-classifast(x, y, prob, type = "simple")
+classifast(x, y, prob = 0.65, type = "simple")
 }
 \arguments{
 \item{x}{Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)}
@@ -12,11 +12,11 @@ classifast(x, y, prob, type = "simple")
 \item{y}{A factor with the labels of the rows of x}
 }
 \value{
-hola
+Not yet
 }
 \description{
-Add together two numbers.
+Compare different clasification methods on multivariante data
 }
 \examples{
-hola
+Not yet
 }
