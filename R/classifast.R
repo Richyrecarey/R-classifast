@@ -4,11 +4,18 @@
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
+#' @param type Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
+#'   "hard": All implemented classifiers (time consuming)
+#' @param kfold Number of folds in the cross validation estimation  
+#' 
 #' @return Not yet
 #' @examples Not yet
 #' @export
 
-classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
+
+classifast <- function(x, y, 
+                       prob = 0.65, type = c("simple"), 
+                       kfold = 10, cv.iter = 5, timing = TRUE){
 
   # Change the input x and y accordingly
 
@@ -25,6 +32,7 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
     time = time.mlog
     message("The expected computation time is ", time, " s")
   }
+
   # In case "y" is a data.frame, modify it accordingly
   if(is.data.frame(y)){
     y <- y[[1]]
@@ -36,6 +44,22 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
     y <- factor(y, levels = paste(unique(y)))
   }
 
+  # Levels of y?
+  if(length(unique(y)) == 1){
+    stop("The labels vector only has one level")
+  }
+
+  if(length(unique(y)) == 2){
+    # Variable to trigger logistic or m.logistic
+    # that also defines the classes of the object
+    binary <- TRUE
+    obj.class <- c("classifast", type, "binary")
+  } else {
+    # Otherwise:
+    obj.class <- c("classifast", type)
+    binary <- FALSE
+  }
+
   # Check for lengths
   if(n != length(y)){
     stop("The labels vector must have the same length as the number of rows in your data")
@@ -45,11 +69,13 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
   if(class(x) == "matrix"){
     x <- data.frame(x)
   }
+  
 
   # Creation of several character vectors needed
   # plus we change the names of the variables to V1, ..., Vp
   b1 <- paste0("V", 1:p,collapse = "+")
   b2 <- paste0("V", 1:p)
+
   # This formula y~V1+...+Vp will be usefull for some
   # of the classifiers
   formula <- paste("y ~ ",b1,sep = "")
@@ -65,8 +91,10 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
   # Selection of train and test set
   # on the "x" data.frame, keeping "y" the whole time.
   train.n <- floor(prob * n)
+
   # Indexex for the train set
   train.i <- sample(n, train.n)
+
   # Indexes for the test set
   test.i <- c(1:n)[-train.i]
 
@@ -81,18 +109,45 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
   # For now, we will call all of them, in the future we will select
   # which ones we want. Nonetheless, the lineal classificator
   # wil always be called.
+  # 
+  # ORDER
+  # 1. Logistic Regression (binary or multinomial)
+  # 2. SVM
 
-  # Multinomial Logistic Regression
-  m.log <- m.logistic(train = x.train,
+
+  ##################### LOGISTIC REGRESSION ####################
+  # If the model is binary, we call logistic, otherwise m.logistic
+  if(binary){
+    logistic <- logistic(train = x.train,
                       test = x.test,
                       formula = formula)
+  } else {
 
-  # --------------------- OUTPUT ------------------- #
+    # Otherwise, we fit a multinomial regression
+    # Multinomial Logistic Regression
+    logistic <- m.logistic(train = x.train,
+                      test = x.test,
+                      formula = formula)
+  }
+  ##############################################################
 
+
+
+
+  # ------------------------- OUTPUT ------------------------------- #
+  
   # Invisible: Only if assigned you get this list of lists of info
-  invisible(structure(list(m.log = m.log),
-                   class = "classifast"))
-}
+  # "type" gives us which methods to use in summary and predict
+  # "binary" tells us if the data is binary
+
+ 
+  invisible(structure(list(logistic = logistic,
+                           info = info),
+                      class = obj.class))
+
+
+
+  }
 
 
 #' Summary method for the objetc with class "classifast"
@@ -105,6 +160,66 @@ classifast <- function(x, y, prob = 0.65, type = "simple", timing = TRUE){
 
 
 summary.classifast <- function(x){
-  # Still working on it
-  invisible(x)
+  # At this point, we have the "classifast" objetct
+  # We create the needed objets for printing
+
+  # In n.simple and n.hard there are the future 
+  # methods for use, on both binary and multilabel data
+  # First the "simple", then the "hard".
+  # For now theres only one in simple
+  # This part should be independent, the rest
+  # should depend only on tjis 6 lines:
+  if(inherits(x, "binary")){
+      n.simple <- c("Logistic reg")
+  } else {
+
+    n.simple <- c("Multi Logistic reg")
+    n.hard <- c("ANN")
+  }
+
+
+  if(inherits(x, "simple")){
+    # Initialize
+    error.test <- numeric(length(n.simple))
+    error.train <- numeric(length(n.simple))
+
+    # We build these vectors:
+    for (i in seq_along(n.simple)){
+      # These are the errores of each method in "n.simple"
+      # or "n.hard". The order is as in "n.simple"!!!
+      # Since we have different output for bina
+      error.test[i] <- x[[i]]$error.test
+      error.train[i] <- x[[i]]$error.train
+    }
+    # We build the dataframe
+  } else {
+    # If its not simple, is "hard"
+    error.test <- numeric(length(n.simple) + length(n.hard))
+    error.train <- numeric(length(n.simple) + length(n.hard))
+
+    # We build these vectors throughout both sets of methods
+    # So the first ones will be simple and the final ones hard
+    for (i in seq_along(c(n.simple, n.hard))){
+      # These are the errores of each method in "n.simple"
+      # or "n.hard". The order is as in "n.simple"!!!
+      # Since we have different output for bina
+      error.test[i] <- x[[i]]$error.test
+      error.train[i] <- x[[i]]$error.train
+    }
+
+
+  }
+
+  results <- data.frame(methods = n.simple,
+                        e1 = error.test,
+                        e2 = error.train)
+  colnames(results) <- c("Method",
+                         "Test error (CV)",
+                         "Train error")
+
+  cat(paste0("Test error was approximated using ", kfold, "-fold validation"), "\n", "\n", "\n")
+  print(results)
 }
+
+
+
