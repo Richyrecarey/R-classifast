@@ -4,18 +4,31 @@
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
-#' @param type Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
+#' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
 #'   "hard": All implemented classifiers (time consuming)
-#' @param kfold Number of folds in the cross validation estimation  
+#'   "log": Logistic or multinomial linear logistic regression
+#'   "svm": Support Vector Machines with Radial Kernel
 #' 
+#' 
+#' 
+#' 
+#' 
+#' @param kfold Number of folds in the cross validation estimation
+#'
 #' @return Not yet
 #' @examples Not yet
 #' @export
 
 
-classifast <- function(x, y, 
-                       prob = 0.65, type = c("simple"), 
+classifast <- function(x, y,
+                       prob = 0.65, method = c("simple"),
                        kfold = 10, cv.iter = 5, timing = TRUE){
+  ##################### CHECK & TWEAK COMPATIBILITY OF INPUT ##################
+  # Proper changes for methods: in "method" we have the methods wanted
+  # to be computed. If "simple" is selected (default), we compute:
+  if(method == "simple"){
+    method = c("log")
+  }  
 
   # Change the input x and y accordingly
 
@@ -44,22 +57,6 @@ classifast <- function(x, y,
     y <- factor(y, levels = paste(unique(y)))
   }
 
-  # Levels of y?
-  if(length(unique(y)) == 1){
-    stop("The labels vector only has one level")
-  }
-
-  if(length(unique(y)) == 2){
-    # Variable to trigger logistic or m.logistic
-    # that also defines the classes of the object
-    binary <- TRUE
-    obj.class <- c("classifast", type, "binary")
-  } else {
-    # Otherwise:
-    obj.class <- c("classifast", type)
-    binary <- FALSE
-  }
-
   # Check for lengths
   if(n != length(y)){
     stop("The labels vector must have the same length as the number of rows in your data")
@@ -70,7 +67,6 @@ classifast <- function(x, y,
     x <- data.frame(x)
   }
   
-
   # Creation of several character vectors needed
   # plus we change the names of the variables to V1, ..., Vp
   b1 <- paste0("V", 1:p,collapse = "+")
@@ -79,15 +75,18 @@ classifast <- function(x, y,
   # This formula y~V1+...+Vp will be usefull for some
   # of the classifiers
   formula <- paste("y ~ ",b1,sep = "")
-
+  
+  # Proper naming of the cols of x, to be used by the methods
   colnames(x) <- b2
 
   # We add the factor "y" to the data.frame "x"
   x$y <- y
+  ###############################################################
 
   # At this point, we should have a dataframe "x" with p+1 cols
   # and "y" in the last one as a factor
-
+  
+  ###################### DATA SPLIT #########################
   # Selection of train and test set
   # on the "x" data.frame, keeping "y" the whole time.
   train.n <- floor(prob * n)
@@ -104,55 +103,56 @@ classifast <- function(x, y,
   # This way we do the subsetting only once, in the main function
   x.train <- x[train.i, ]
   x.test <- x[test.i, ]
+  ###############################################################
 
   # ------------------------- MODELS ------------------------------ #
-  # For now, we will call all of them, in the future we will select
-  # which ones we want. Nonetheless, the lineal classificator
-  # wil always be called.
-  # 
-  # ORDER
-  # 1. Logistic Regression (binary or multinomial)
-  # 2. SVM
+  # We selected the methods wanted to be computed in the vector 
+  # "method", so in total length(method) methods will be computed
 
+  # Models will be stored in this list
+  output <- list()
 
   ##################### LOGISTIC REGRESSION ####################
-  # If the model is binary, we call logistic, otherwise m.logistic
-  if(binary){
-    logistic <- logistic(train = x.train,
+  # Both options, for logistic and multinomial logistic regression
+  # are inside the function "logistic.R"
+  if("log" %in% method){
+    model <- logistic(train = x.train,
                       test = x.test,
+                      kfold = kfold, 
+                      cv.iter = cv.iter,
                       formula = formula)
-  } else {
 
-    # Otherwise, we fit a multinomial regression
-    # Multinomial Logistic Regression
-    logistic <- logistic(train = x.train,
-                      test = x.test,
-                      formula = formula)
+    # We add the list of the model, if selected, to the output 
+    # list "output" that has lists with each model.
+    # Important: $ operator preserver the class list
+    output$log <- model
   }
+  ########################### SVM ############################
+
+
   ##############################################################
-  
+
 
   ############################# EXTRA INFO #####################
   # Extra info from the classifiers that may be needed
-  # We could've put here things like the "binary" or "simple" option
-  # to pass them to the methods, but we chose to do it with classes
-  info <- list(kfold = kfold,
+  # for further methods
+  output$info <- list(used.method = method,
+               kfold = kfold,
                cv.iter = cv.iter)
 
   # ------------------------- OUTPUT ------------------------------- #
-  
+  # The objetc output will be a lists of lists with the methods, and 
+  # at the end, a list with "info"
   # Invisible: Only if assigned you get this list of lists of info
-  # "type" gives us which methods to use in summary and predict
-  # "binary" tells us if the data is binary
+  # 
 
- 
-  invisible(structure(list(logistic = logistic,
-                           info = info),
-                      class = obj.class))
+
+  invisible(structure(output,
+                      class = "classifast"))
 
 
 
-  }
+}
 
 
 #' Summary method for the objetc with class "classifast"
@@ -168,17 +168,17 @@ summary.classifast <- function(x){
   # At this point, we have the "classifast" objetct
   # We create the needed objets for printing
 
-  # In n.simple and n.hard there are the future 
+  # In n.simple and n.hard there are the future
   # methods for use, on both binary and multilabel data
   # First the "simple", then the "hard".
   # For now theres only one in simple
   # This part should be independent, the rest
   # should depend only on tjis 6 lines:
-  
-  # Methods available as today:
-  method <- 
+
+  # methods available as today:
+  n.simple <- c("Logistic reg")
   n.hard <- c("ANN")
-  
+
 
 
   if(inherits(x, "simple")){
@@ -216,7 +216,7 @@ summary.classifast <- function(x){
   results <- data.frame(methods = n.simple,
                         e1 = error.test,
                         e2 = error.train)
-  colnames(results) <- c("Method",
+  colnames(results) <- c("method",
                          "Test err %",
                          "Train err %")
 
