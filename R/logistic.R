@@ -17,7 +17,7 @@ logistic <- function(train, test, formula){
   # We fit the model on the train data
   # We use the formula = "formula", for which
   # the object "train" is designed
-  
+  model <- multinom(formula, train, trace = FALSE)
 
   # Calculate error on train set
   pred.train <- predict(model)
@@ -33,7 +33,8 @@ logistic <- function(train, test, formula){
   # The return:
   # Most important part: It must be the same in each method
   # Same structure:
-  return(list(error.train = error.train,
+  return(list(model = model,
+              error.train = error.train,
               error.test = error.test,
               coefs = coefficients(model),
               AIC = model$AIC))

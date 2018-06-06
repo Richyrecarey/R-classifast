@@ -130,9 +130,14 @@ classifast <- function(x, y,
                       formula = formula)
   }
   ##############################################################
+  
 
-
-
+  ############################# EXTRA INFO #####################
+  # Extra info from the classifiers that may be needed
+  # We could've put here things like the "binary" or "simple" option
+  # to pass them to the methods, but we chose to do it with classes
+  info <- list(kfold = kfold,
+               cv.iter = cv.iter)
 
   # ------------------------- OUTPUT ------------------------------- #
   
@@ -169,13 +174,11 @@ summary.classifast <- function(x){
   # For now theres only one in simple
   # This part should be independent, the rest
   # should depend only on tjis 6 lines:
-  if(inherits(x, "binary")){
-      n.simple <- c("Logistic reg")
-  } else {
-
-    n.simple <- c("Multi Logistic reg")
-    n.hard <- c("ANN")
-  }
+  
+  # Methods available as today:
+  n.simple <- c("Logistic reg")
+  n.hard <- c("ANN")
+  
 
 
   if(inherits(x, "simple")){
@@ -214,10 +217,10 @@ summary.classifast <- function(x){
                         e1 = error.test,
                         e2 = error.train)
   colnames(results) <- c("Method",
-                         "Test error (CV)",
-                         "Train error")
+                         "Test err %",
+                         "Train err %")
 
-  cat(paste0("Test error was approximated using ", kfold, "-fold validation"), "\n", "\n", "\n")
+  cat(paste0("Test error was approximated using ", x$info$kfold, "-fold validation"), "\n", "\n", "\n")
   print(results)
 }
 
