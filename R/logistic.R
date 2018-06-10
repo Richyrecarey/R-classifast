@@ -56,23 +56,24 @@ logistic <- function(train, test, kfold, cv.iter, formula){
   # We will be given 2 data.frames of train and test data
   # Both with p variables V1,...Vp,y
 
-  # Variables that may be needed
+  # Now p has got one more value, y
   p <- ncol(train)
 
   # Check if this is a binary problem
   if(length(unique(train[, p])) == 2){
     # Add logistic regression
-    model <- 2
+
+
   } else {
     #Add multinomial
-    model  <- 3
+    # First the full model
+    model  <- multinom(formula, train, trace = FALSE)
+    error.kfold <- error_estimation(multinom, )
+
+    pred.test <- predict(model, test[-(p)])
+    error.test <- mean(pred.test == test[[p]])*100
+    error.train <- mean(predict(model) == train[[p]])*100
   }
-
-
-
-
-
-  ##################### ERROR CALCULATION ###############
 
 
   # The return:
