@@ -101,6 +101,18 @@ classifast <- function(x, y,
   # This way we do the subsetting only once, in the main function
   x.train <- x[train.i, ]
   x.test <- x[test.i, ]
+
+  ##############################################################
+  # Now we have to split the x.train dataset, with length train.n
+
+  split.i <- sample(train.n, train.n)
+  split <- split(split.i, ceiling(seq_along(split.i)/ floor(train.n / kfold) ))
+  # Now we have a list with kfold lists with the index of the test set
+  # For the CV. 
+
+
+
+
   ###############################################################
 
   # ------------------------- MODELS ------------------------------ #
@@ -117,6 +129,7 @@ classifast <- function(x, y,
     model <- logistic(train = x.train,
                       test = x.test,
                       kfold = kfold,
+                      split = split,
                       cv.iter = cv.iter,
                       formula = formula)
 
@@ -158,7 +171,7 @@ classifast <- function(x, y,
 #'
 #'
 #' @param x Object of class "classifast"
-#' @return Table with errors of different classifiers
+#' @return Table with accuracys of different classifiers
 #' @export
 
 
@@ -169,35 +182,50 @@ summary.classifast <- function(x){
   # Choosen methods
   method <-x$info$used.method
 
+
   # Initialize
-  error.kfold <- numeric(length(method))
-  error.test <- numeric(length(method))
-  error.train <- numeric(length(method))
+  accuracy.kfold <- numeric(length(method))
+  accuracy.test <- numeric(length(method))
+  accuracy.train <- numeric(length(method))
 
   # We build these vectors:
-  for (i in seq_along(n.simple)){
-    # These are the errores of each method in "n.simple"
+  for (i in seq_along(method)){
+    # These are the accuracyes of each method in "n.simple"
     # or "n.hard". The order is as in "n.simple"!!!
     # Since we have different output for bina
-    error.test[i] <- x[[i]]$error.test
-    error.train[i] <- x[[i]]$error.train
+    accuracy.kfold[i] <- x[[i]]$accuracy.kfold
+    accuracy.test[i] <- x[[i]]$accuracy.test
+    accuracy.train[i] <- x[[i]]$accuracy.train
   }
 
 
+  results <- data.frame(methods = method,
+                        e3 = accuracy.kfold,
+                        e1 = accuracy.test,
+                        e2 = accuracy.train)
+
+  colnames(results) <- c("Method",
+                         "kf %",
+                         "Test %",
+                         "Train %")
+
+  cat("\n", paste0("k-fold accuracy was approximated using ", x$info$kfold, "-fold validation"), "\n", "\n")
+
+  cat("\n", "Accuracy (%) of the diferent methods used:", "\n", "\n")
 
 
-  }
-
-  results <- data.frame(methods = n.simple,
-                        e1 = error.test,
-                        e2 = error.train)
-  colnames(results) <- c("method",
-                         "Test err %",
-                         "Train err %")
-
-  cat(paste0("Test error was approximated using ", x$info$kfold, "-fold validation"), "\n", "\n", "\n")
   print(results)
 }
 
 
+#' Information about "classifast" implementation
+#'
+#' @return Bunch of information
+#' @export
+#' 
+classifast_info <- function(){
+  cat("Welcome to the package classifast.", "\n", "\n")
 
+  cat("* Binary logistic regression uses glm()", "\n")
+  cat("* Multinomial Logistic Regression uses multinom() from the package 'nnet' ", "\n")
+}
