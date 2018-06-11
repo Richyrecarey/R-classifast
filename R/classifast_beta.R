@@ -200,9 +200,9 @@ summary.classifast <- function(x){
 
 
   results <- data.frame(methods = method,
-                        e3 = accuracy.kfold,
-                        e1 = accuracy.test,
-                        e2 = accuracy.train)
+                        e1 = accuracy.kfold,
+                        e2 = accuracy.test,
+                        e3 = accuracy.train)
 
   colnames(results) <- c("Method",
                          "kf %",
