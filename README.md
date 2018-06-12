@@ -16,10 +16,9 @@ This minimal package is intended to be a project to both enhance our R skills an
 Given multivariate data in a matrix-like objet `x` (where rows are observations and cols variables) and its correct labels in a vector-like object `y`, the main function `classifast()` will train the desired statistical classifiers selected in the vector `method`. Several options are:
 
 
-⋅⋅* `method = "log"`: It will train binary or multinomial logistic regression, as needed.
-
-..* `method = "svm": It will train Radial SVM.
-⋅⋅* `method = "simple"`: It's the same as c("log", "svm")
+⋅⋅* `method = "log"`: It will train binary or multinomial logistic regression, as needed. <br />
+..* `method = "svm"`: It will train Radial SVM. <br />
+⋅⋅* `method = "simple"`: It's the same as c("log", "svm") <br />
 ..* More methods are under development
 
 
