@@ -6,7 +6,7 @@ This minimal package is intended to be a project to both enhance our R skills an
 
 ## Instalation
 
-`instal.packages(devtools)`
+`instal.packages(devtools)`__
 `devtools::install_github("Richyrecarey/classifast")`
 
 
