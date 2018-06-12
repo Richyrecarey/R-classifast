@@ -1,13 +1,20 @@
-#' Compare different clasification methods on multivariante data
+#' Compare different classification methods on multivariate data
 #'
 #'
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
-#' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
-#'   "hard": All implemented classifiers (time consuming)
-#'   "log": Logistic or multinomial linear logistic regression
-#'   "svm": Support Vector Machines with Radial Kernel
+#' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
+#'
+#'   - "log": Logistic or multinomial linear logistic regression
+#'
+#'   - "svm": Support Vector Machines with Radial Kernel
+#'
+#'   - "simple": Trains "log" and "svm".
+#'
+#'   - "all": All implemented classifiers (time consuming)
+#'
+#'
 #'
 
 #' @param kfold Number of folds in the cross validation estimation
@@ -25,6 +32,8 @@ classifast <- function(x, y,
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
   if(method == "simple"){
+    method = c("log")
+  } else if (method == "all"){
     method = c("log")
   }
 
@@ -108,7 +117,7 @@ classifast <- function(x, y,
   split.i <- sample(train.n, train.n)
   split <- split(split.i, ceiling(seq_along(split.i)/ floor(train.n / kfold) ))
   # Now we have a list with kfold lists with the index of the test set
-  # For the CV. 
+  # For the CV.
 
 
 
@@ -152,7 +161,7 @@ classifast <- function(x, y,
                cv.iter = cv.iter)
 
   # ------------------------- OUTPUT ------------------------------- #
-  # The objetc output will be a lists of lists with the methods, and
+  # The object output will be a lists of lists with the methods, and
   # at the end, a list with "info"
   # Invisible: Only if assigned you get this list of lists of info
   #
@@ -166,17 +175,17 @@ classifast <- function(x, y,
 }
 
 
-#' Summary method for the objetc with class "classifast"
+#' Summary method for the object with class "classifast"
 #'
 #'
 #'
 #' @param x Object of class "classifast"
-#' @return Table with accuracys of different classifiers
+#' @return Table with accuracies of different classifiers
 #' @export
 
 
 summary.classifast <- function(x){
-  # At this point, we have the "classifast" objetct
+  # At this point, we have the "classifast" object
   # We create the needed objets for printing
 
   # Choosen methods
@@ -211,7 +220,7 @@ summary.classifast <- function(x){
 
   cat("\n", paste0("k-fold accuracy was approximated using ", x$info$kfold, "-fold validation"), "\n", "\n")
 
-  cat("\n", "Accuracy (%) of the diferent methods used:", "\n", "\n")
+  cat("Accuracy (%) of the diferent methods used:", "\n", "\n")
 
 
   print(results)
@@ -222,7 +231,7 @@ summary.classifast <- function(x){
 #'
 #' @return Bunch of information
 #' @export
-#' 
+#'
 classifast_info <- function(){
   cat("Welcome to the package classifast.", "\n", "\n")
 

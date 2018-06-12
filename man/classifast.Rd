@@ -2,7 +2,7 @@
 % Please edit documentation in R/classifast.R
 \name{classifast}
 \alias{classifast}
-\title{Compare different clasification methods on multivariante data}
+\title{Compare different classification methods on multivariate data}
 \usage{
 classifast(x, y, prob = 0.65, method = c("simple"),
   kfold = floor(nrow(x)/15), cv.iter = 1, timing = TRUE)
@@ -12,10 +12,15 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 
 \item{y}{A factor with the labels of the rows of x}
 
-\item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
-"hard": All implemented classifiers (time consuming)
-"log": Logistic or multinomial linear logistic regression
-"svm": Support Vector Machines with Radial Kernel}
+\item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
+
+  - "log": Logistic or multinomial linear logistic regression
+
+  - "svm": Support Vector Machines with Radial Kernel
+
+  - "simple": Trains "log" and "svm".
+
+  - "all": All implemented classifiers (time consuming)}
 
 \item{kfold}{Number of folds in the cross validation estimation}
 }
@@ -23,7 +28,7 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 Not yet
 }
 \description{
-Compare different clasification methods on multivariante data
+Compare different classification methods on multivariate data
 }
 \examples{
 Not yet

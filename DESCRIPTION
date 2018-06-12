@@ -1,6 +1,6 @@
 Package: classifast
 Type: Package
-Title: Automatic Testing Of Several Classifiers On Multivariate Data
+Title: Automatic Testing And Stacking Of Classifiers For Predicting
 Version: 0.1.0
 Authors@R: person("Richy", "Recarey", email = "richyrecarey@gmail.com",
   role = c("aut", "cre")) 

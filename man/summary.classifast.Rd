@@ -2,7 +2,7 @@
 % Please edit documentation in R/classifast.R
 \name{summary.classifast}
 \alias{summary.classifast}
-\title{Summary method for the objetc with class "classifast"}
+\title{Summary method for the object with class "classifast"}
 \usage{
 \method{summary}{classifast}(x)
 }
@@ -10,8 +10,8 @@
 \item{x}{Object of class "classifast"}
 }
 \value{
-Table with accuracys of different classifiers
+Table with accuracies of different classifiers
 }
 \description{
-Summary method for the objetc with class "classifast"
+Summary method for the object with class "classifast"
 }
