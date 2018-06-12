@@ -23,7 +23,7 @@ Given multivariate data in a matrix-like objet `x` (where rows are observations 
 
 Once trained, `classifast()` will return an object of class `classifast`, which has several methods implemented. For example:
 
-```python
+```R
 s = "Python syntax highlighting"
 print s
 ```
