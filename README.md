@@ -32,17 +32,18 @@ Once trained, `classifast()` will return an object of class `classifast`, which 
 ```R
 # Train several classifiers on the Iris dataset
 output <- classifast(x = iris[-5], y = iris[5], method = "simple")
+
 summary(output)
 
  k-fold accuracy was approximated using 10-fold validation 
  
-
  Accuracy (%) of the diferent methods used: 
  
   Method     kf %   Test % Train %
-1    log 96.66667 92.45283     100
+1    log    96.66    92.45     100
+2    svm    95.52    92.54    99.7
 ```
-And it will return a table with a summary of different accuracy metrics for all the methods selected.
+
 
 ### predict.classifast()
 
