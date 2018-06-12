@@ -4,12 +4,20 @@
 \alias{classifast}
 \title{Compare different clasification methods on multivariante data}
 \usage{
-classifast(x, y, prob = 0.65, type = "simple", timing = TRUE)
+classifast(x, y, prob = 0.65, method = c("simple"),
+  kfold = floor(nrow(x)/15), cv.iter = 1, timing = TRUE)
 }
 \arguments{
 \item{x}{Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)}
 
 \item{y}{A factor with the labels of the rows of x}
+
+\item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other posibilities are:
+"hard": All implemented classifiers (time consuming)
+"log": Logistic or multinomial linear logistic regression
+"svm": Support Vector Machines with Radial Kernel}
+
+\item{kfold}{Number of folds in the cross validation estimation}
 }
 \value{
 Not yet

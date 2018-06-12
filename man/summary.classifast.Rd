@@ -10,7 +10,7 @@
 \item{x}{Object of class "classifast"}
 }
 \value{
-Table with errors of different classifiers
+Table with accuracys of different classifiers
 }
 \description{
 Summary method for the objetc with class "classifast"

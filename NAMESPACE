@@ -2,4 +2,5 @@
 
 S3method(summary,classifast)
 export(classifast)
+export(classifast_info)
 importFrom(nnet,multinom)

@@ -4,7 +4,7 @@
 \alias{logistic}
 \title{Apply logistic function to the data}
 \usage{
-logistic(train, test, formula)
+logistic(train, test, kfold, split, cv.iter, formula)
 }
 \arguments{
 \item{train}{Data frame with train data}
