@@ -21,23 +21,25 @@ Given multivariate data in a matrix-like objet `x` (where rows are observations 
 * `method = "simple"`: It's the same as c("log", "svm") <br />
 * More methods are under development <br />
 
+
 All the options and parameters available to tweak are available at `help(classifast)`.
 
 
-Once trained, `classifast()` will return an object of class `classifast`, which has several methods implemented. For example:
+Once trained, `classifast()` will return an object of class `classifast`, which has several methods implemented:
+
+### summary.classifast()
 
 ```R
 # Train several classifiers on the Iris dataset
 output <- classifast(x = iris[-5], y = iris[5], method = "simple")
 summary(output)
 ```
-And we will have a table that should look like this:
+And it will return a table with a summary of different accuracy metrics for all the methods selected.
 
- k-fold accuracy was approximated using 10-fold validation 
- 
- Accuracy (%) of the diferent methods used: 
- 
-  Method     kf %   Test % Train %
-1    log 96.66667 92.45283     100
+### predict.classifast()
+
+Still developing
+
+
 
 
