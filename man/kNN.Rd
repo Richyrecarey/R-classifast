@@ -4,7 +4,7 @@
 \alias{kNN}
 \title{Apply knn algorithm}
 \usage{
-kNN(train, test, kfold, split, cv.iter)
+kNN(train, test, kfold, split)
 }
 \arguments{
 \item{train}{Data frame with train data}

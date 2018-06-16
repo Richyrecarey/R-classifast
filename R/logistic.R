@@ -26,7 +26,7 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
 
     # First the full model
     # formula = y ~ V1 + ...
-    model  <- multinom(formula, train, trace = FALSE)
+    model  <- nnet::multinom(formula, train, trace = FALSE)
 
     # Test and train accuracy
     pred.test <- predict(model, test[-(p)])
@@ -37,7 +37,7 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
     accuracy.kfold <- numeric(length = kfold)
     for (i in 1:kfold){
       # Adjust the model on the data with index that are not split[[i]]
-      model.kf <- multinom(formula, train[-split[[i]], ], trace = FALSE)
+      model.kf <- nnet::multinom(formula, train[-split[[i]], ], trace = FALSE)
       pred.kf  <- predict(model.kf, train[split[[i]], -(p)])
       accuracy.kfold[i] <- mean(pred.kf == train[split[[i]], p])*100
     }

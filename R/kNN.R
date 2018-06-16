@@ -17,8 +17,8 @@ kNN <- function(train, test, kfold, split){
     if(n<100){
       k = seq(1, 15)
     } else {
-      k = seq.int(max(sqrt(n) - floor(log(n)^2), 1),
-                  min(sqrt(n) + floor(log(n)^2), 2*sqrt(n)),
+      k = seq.int(max(floor(sqrt(n) - log(n)^1.6), 1),
+                  min(floor(sqrt(n) + log(n)^1.6), 2*sqrt(n)),
                   by = floor(log(n)))
     }
 
@@ -26,7 +26,7 @@ kNN <- function(train, test, kfold, split){
     # Wraper para utilizar con lapply y vectorizar el kfold
     wrapper <- function(index, data = train, k = k){
       # Entrenamos o modelo para index[[i]]
-      model <- knn(train[-index, -(p)],
+      model <- class::knn(train[-index, -(p)],
                    train[index, -(p)],
                    train[-index, (p)],
                    k)
@@ -53,11 +53,11 @@ kNN <- function(train, test, kfold, split){
 
     # Test and train accuracy
     # Model with all the data
-    model <- knn(train[, -(p)],
+    model <- class::knn(train[, -(p)],
                  train[, -(p)],
                  train[, p],
                  k = k.opt)
-    pred.test <- knn(train[, -(p)],
+    pred.test <- class::knn(train[, -(p)],
                      test[, -(p)],
                      train[, p],
                      k = k.opt)
