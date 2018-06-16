@@ -32,9 +32,9 @@ classifast <- function(x, y,
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
   if(method == "simple"){
-    method = c("log", "knn")
+    method = c("log", "knn", "svm")
   } else if (method == "all"){
-    method = c("log", "knn")
+    method = c("log", "knn", "svm")
   }
 
   # Change the input x and y accordingly
@@ -161,7 +161,13 @@ classifast <- function(x, y,
 
 
   ########################### SVM ############################
-
+  # Note: Split is automaticly done inside SVM
+  if ("svm" %in% method){
+    model <- SVM(train = x.train,
+                 test = x.test,
+                 kfold = kfold)
+    output$svm <- model
+  }
 
   ##############################################################
 

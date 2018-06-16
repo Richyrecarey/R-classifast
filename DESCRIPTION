@@ -8,6 +8,7 @@ Maintainer: Richy Recarey <richyrecarey@gmail.com>
 Depends:
     R (>= 3.1.0)
 Imports:
+    e1071,
     nnet,
     class
 Description: A minimal R package that, given multivariate data and its labels, 

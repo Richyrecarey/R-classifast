@@ -51,6 +51,7 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
   return(list(model = model,
               accuracy.kfold = accuracy.kfold,
               accuracy.test = accuracy.test,
-              accuracy.train = accuracy.train))
+              accuracy.train = accuracy.train,
+              labels.test = pred.test))
 }
 
