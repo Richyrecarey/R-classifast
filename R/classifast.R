@@ -32,9 +32,9 @@ classifast <- function(x, y,
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
   if(method == "simple"){
-    method = c("log")
+    method = c("log", "knn")
   } else if (method == "all"){
-    method = c("log")
+    method = c("log", "knn")
   }
 
   # Change the input x and y accordingly
@@ -113,6 +113,7 @@ classifast <- function(x, y,
 
   ##############################################################
   # Now we have to split the x.train dataset, with length train.n
+  # And using kfold
 
   split.i <- sample(train.n, train.n)
   split <- split(split.i, ceiling(seq_along(split.i)/ floor(train.n / kfold) ))
@@ -147,11 +148,22 @@ classifast <- function(x, y,
     # Important: $ operator preserver the class list
     output$log <- model
   }
+  ########################### kNN ############################
+  if ("knn" %in% method){
+    model <- kNN(train = x.train,
+                      test = x.test,
+                      kfold = kfold,
+                      split = split)
+    output$knn <- model
+  }
+
+  ##############################################################
+
+
   ########################### SVM ############################
 
 
   ##############################################################
-
 
   ############################# EXTRA INFO #####################
   # Extra info from the classifiers that may be needed

@@ -25,7 +25,7 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
     #Add multinomial
 
     # First the full model
-    # formula = y ~ V1 + ... 
+    # formula = y ~ V1 + ...
     model  <- multinom(formula, train, trace = FALSE)
 
     # Test and train accuracy
