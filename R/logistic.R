@@ -45,6 +45,11 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
   }
 
 
+  # Complete model to return
+  data <- rbind(train, test)
+  model  <- nnet::multinom(formula, data, trace = FALSE)
+
+
   # The return:
   # Most important part: It must be the same in each method
   # Same structure:

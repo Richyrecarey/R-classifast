@@ -256,3 +256,41 @@ classifast_info <- function(){
   cat("* Binary logistic regression uses glm()", "\n")
   cat("* Multinomial Logistic Regression uses multinom() from the package 'nnet' ", "\n")
 }
+
+
+
+#' Predict method for the object of class "classifast"
+#'
+#'
+#'
+#' @param x Object of class "classifast"
+#' @param newdata Matrix-like objetc with new data to predict on
+#' @param type Method for prediction. "vote" is basic stacking. "stack" constructs a meta-classifier.
+#' @param cor TRUE by default. Prints info about the correlation of predictions of the diferent methods.
+#' @return Table with accuracies of different classifiers
+#' @importFrom questionr cramer.v
+#' @export
+
+
+predict.classifast <- function(x, newdata, type = NULL, cor = TRUE){
+
+  # Correlation calculous
+  predictions <- matrix(0,
+                        nrow = length(x$info$used.method),
+                        ncol = length(x[[1]]$labels.test))
+  rownames(predictions) <- x$info$used.method
+
+  method = x$info$used.method
+
+  for (i in seq_along(method)){
+    predictions[i, ] <- x[[method[i]]]$labels.test
+  }
+
+  # More correlation:
+  t1 <- table(predictions[], knn)
+
+
+
+
+
+}

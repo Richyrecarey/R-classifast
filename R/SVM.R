@@ -6,6 +6,7 @@
 #' @examples
 #' none
 #' @importFrom e1071 tune
+#' @importFrom e1071 svm
 
 SVM <- function(train, test, kfold){
 
@@ -23,9 +24,10 @@ SVM <- function(train, test, kfold){
 
 
   # Parameters selected:
-  param = model$best.performance
+  param = model$best.parameters
 
-  best.model <- model$best.model
+  # Is it interest?
+  # best.model <- model$best.model
 
 
   accuracy.kfold <- 100 * (1 - model$best.performance)
@@ -33,6 +35,14 @@ SVM <- function(train, test, kfold){
   accuracy.test <- mean(predict(best.model, test[, -p]) == test[[p]]) * 100
 
   accuracy.train <- mean(predict(best.model, train[, -p]) == train[[p]]) * 100
+
+  # Modelo completo en t
+  data <- rbind(train, test)
+  model <- e1071::svm(data[, -p],
+                      data[[p]],
+                      gamma = param[[1]],
+                      cost = param[[2]])
+
 
 
 
@@ -43,6 +53,6 @@ SVM <- function(train, test, kfold){
               accuracy.test = accuracy.test,
               accuracy.train = accuracy.train,
               labels.test = predict(best.model, test[, -p]),
-              model = best.model,
+              model = model,
               param = param))
 }

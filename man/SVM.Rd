@@ -4,7 +4,7 @@
 \alias{SVM}
 \title{Apply knn algorithm}
 \usage{
-SVM(train, test, kfold, split)
+SVM(train, test, kfold)
 }
 \arguments{
 \item{train}{Data frame with train data}
