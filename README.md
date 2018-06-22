@@ -13,7 +13,7 @@ This minimal package is intended to be a project to both enhance our R skills an
 
 ## Usage
 
-Given multivariate data in a matrix-like objet `x` (rows are observations, columns are variables) and its correct labels in a vector-like object `y`, the main function `classifast(x, y)` will train the desired statistical classifiers selected in the vector `method`. Several options are:
+Given multivariate data in a matrix-like objet `x` (rows are observations, columns are variables) and its correct labels in a vector-like object `y`, the main function `classifast(x, y, method)` will train the desired statistical classifiers selected in the string vector `method`. Several options are:
 
 
 * `method = "log"`: It will train binary or multinomial logistic regression, as needed. <br />
