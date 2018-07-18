@@ -1,5 +1,5 @@
 #' Compare different classification methods on multivariate data
-#'
+#' Manuel Vaamonde
 #'
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
