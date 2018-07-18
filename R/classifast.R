@@ -4,20 +4,22 @@
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
+#' @param prob Percentage p for the split train-test data. (1-prob)% is used for testing.
 #' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 #'
 #'   - "log": Logistic or multinomial linear logistic regression
 #'
 #'   - "svm": Support Vector Machines with Radial Kernel
 #'
-#'   - "simple": Trains "log" and "svm".
+#'   - "knn": kNN with cross-validation choosing of K
+#'
+#'   - "simple": Trains "log", "svm" and "knn".
 #'
 #'   - "all": All implemented classifiers (time consuming)
 #'
-#'
-#'
-
 #' @param kfold Number of folds in the cross validation estimation
+#' @param timing if TRUE, shows you prediction of executing time. Feel free to ask the models we use.
+#' @param cv.iter Number of iterations to do with cross validation.
 #'
 #' @return Not yet
 #' @examples Not yet
@@ -94,6 +96,7 @@ classifast <- function(x, y,
   # and "y" in the last one as a factor
 
   ###################### DATA SPLIT #########################
+
   # Selection of train and test set
   # on the "x" data.frame, keeping "y" the whole time.
   train.n <- floor(prob * n)
@@ -210,27 +213,26 @@ summary.classifast <- function(x){
   method <-x$info$used.method
 
 
-  # Initialize
+  # Initialize, we will have as many accuracies of each time as length(method)
   accuracy.kfold <- numeric(length(method))
   accuracy.test <- numeric(length(method))
   accuracy.train <- numeric(length(method))
 
   # We build these vectors:
   for (i in seq_along(method)){
-    # These are the accuracyes of each method in "n.simple"
-    # or "n.hard". The order is as in "n.simple"!!!
-    # Since we have different output for bina
+    # These are the accuracies of each method
+    # They are already in order
     accuracy.kfold[i] <- x[[i]]$accuracy.kfold
     accuracy.test[i] <- x[[i]]$accuracy.test
     accuracy.train[i] <- x[[i]]$accuracy.train
   }
 
-
+  # We add a columns with the method names
   results <- data.frame(methods = method,
                         e1 = accuracy.kfold,
                         e2 = accuracy.test,
                         e3 = accuracy.train)
-
+  # Names for each column
   colnames(results) <- c("Method",
                          "kf %",
                          "Test %",
@@ -255,6 +257,8 @@ classifast_info <- function(){
 
   cat("* Binary logistic regression uses glm()", "\n")
   cat("* Multinomial Logistic Regression uses multinom() from the package 'nnet' ", "\n")
+  cat("* SVM uses svm() from the package 'e1071' ", "\n")
+
 }
 
 
@@ -273,7 +277,7 @@ classifast_info <- function(){
 
 
 predict.classifast <- function(x, newdata, type = NULL, cor = TRUE){
-
+  # Check new data format and size. It must be a dataframe with p columns.
   # Correlation calculous
   predictions <- matrix(0,
                         nrow = length(x$info$used.method),

@@ -18,7 +18,7 @@ SVM <- function(train, test, kfold){
                 train.x = train[, -p],
                 train.y = train[, p],
                 ranges = list(gamma = 2^(-2:2), cost = 2^(1:4)),
-                tunecontrol = tune.control(sampling = "cross",
+                tunecontrol = e1071::tune.control(sampling = "cross",
                                            cross = kfold,
                                            best.model = TRUE))
 
@@ -27,7 +27,7 @@ SVM <- function(train, test, kfold){
   param = model$best.parameters
 
   # Is it interest?
-  # best.model <- model$best.model
+  best.model <- model$best.model
 
 
   accuracy.kfold <- 100 * (1 - model$best.performance)

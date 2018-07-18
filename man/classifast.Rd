@@ -12,17 +12,25 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 
 \item{y}{A factor with the labels of the rows of x}
 
+\item{prob}{Percentage p for the split train-test data. (1-prob)% is used for testing.}
+
 \item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 
   - "log": Logistic or multinomial linear logistic regression
 
   - "svm": Support Vector Machines with Radial Kernel
 
-  - "simple": Trains "log" and "svm".
+  - "knn": kNN with cross-validation choosing of K
+
+  - "simple": Trains "log", "svm" and "knn".
 
   - "all": All implemented classifiers (time consuming)}
 
 \item{kfold}{Number of folds in the cross validation estimation}
+
+\item{cv.iter}{Number of iterations to do with cross validation.}
+
+\item{timing}{if TRUE, shows you prediction of executing time. Feel free to ask the models we use.}
 }
 \value{
 Not yet
