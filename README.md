@@ -1,4 +1,4 @@
-# classifast
+![alt text](https://image.ibb.co/nHb3Jd/Screenshot_from_2018_07_18_20_52_59.png)
 
 The R package `classifast` is a side project that my friend [Manuel](https://github.com/MVaamonde "Manuel's GitHub profile") and I are starting. Basicaly, the main goal is to make a function that, given multivariate labeled data, gives you a quick overview of which classifiers are the best for your problem (based on several error criterious).
 
