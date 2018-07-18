@@ -1,0 +1,20 @@
+Package: classifast
+Type: Package
+Title: Automatic Testing And Stacking Of Classifiers For Predicting
+Version: 0.1.0
+Authors@R: person("Richy", "Recarey", email = "richyrecarey@gmail.com",
+  role = c("aut", "cre")) 
+Maintainer: Richy Recarey <richyrecarey@gmail.com>
+Depends:
+    R (>= 3.1.0)
+Imports:
+    questionr,
+    e1071,
+    nnet,
+    class
+Description: A minimal R package that, given multivariate data and its labels, 
+    computes and suggest the best classifier for it. 
+License: Not yet
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
