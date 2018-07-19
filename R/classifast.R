@@ -2,6 +2,8 @@
 #'
 #'
 #'
+#'#-# proba
+#'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
 #' @param prob Percentage p for the split train-test data. (1-prob)% is used for testing.
