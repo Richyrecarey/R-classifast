@@ -37,7 +37,7 @@ RForest <- function (train, test, kfold, split){
 
   #Train accuracy
   pred.train <- predict(model, train[, -(p)])
-  accuracy.train <- mean((model$response) == train[[p]]) * 100
+  accuracy.train <- mean(pred.train == train[[p]]) * 100
 
   # The return:
   # Most important part: It must be the same in each method
