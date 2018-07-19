@@ -39,7 +39,7 @@ kNN <- function(train, test, kfold, split){
     # Accuracy kfold para cada k posible
     for (i in seq_along(k)){
 
-      knnfold <- lapply(split, wrapper, dat = train, k = k[i])
+      knnfold <- lapply(split, wrapper, data = train, k = k[i])
       accuracy.each.k[i] <- mean(unlist(knnfold))
     }
 
