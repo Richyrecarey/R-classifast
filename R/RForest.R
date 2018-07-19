@@ -30,7 +30,7 @@ RForest <- function (train, test, kfold, split){
   #Computation of the test accuracy and predictions
   model <- randomForest::randomForest(train[, -(p)], train[, p],
                                       xtest = test[, -(p)],
-                                      ytest = test[index, p])
+                                      ytest = test[, p])
   accuracy.test <- 100*(1 - (model$test$confusion[1,2] + model$test$confusion[2,1]) / nrow(test))
   pred.test <- model$test$predicted
 
