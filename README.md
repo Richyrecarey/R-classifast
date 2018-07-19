@@ -36,6 +36,8 @@ output <- classifast(x = iris[-5], y = iris[5], method = "simple")
 # Show retults of chosen methods
 summary(output)
 ```
+And it should look somehow like this:
+
 ```
  k-fold accuracy was approximated using 10-fold validation 
  
