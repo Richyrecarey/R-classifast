@@ -2,7 +2,7 @@
 % Please edit documentation in R/SVM.R
 \name{SVM}
 \alias{SVM}
-\title{Apply knn algorithm}
+\title{Apply svm algorithm}
 \usage{
 SVM(train, test, kfold)
 }
@@ -12,10 +12,10 @@ SVM(train, test, kfold)
 \item{test}{A number.}
 }
 \value{
-The sum of \code{x} and \code{y}.
+Support Vector Machine model for \code{x} and \code{y}.
 }
 \description{
-Apply knn algorithm
+Apply svm algorithm
 }
 \examples{
 none

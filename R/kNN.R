@@ -1,8 +1,8 @@
-#' Apply knn algorithm
+#' Apply kNN algorithm
 #'
 #' @param train Data frame with train data
 #' @param test A number.
-#' @return The sum of \code{x} and \code{y}.
+#' @return K-Nearest Neighbours model for \code{x} and \code{y}.
 #' @examples
 #' none
 #' @importFrom class knn
@@ -23,9 +23,9 @@ kNN <- function(train, test, kfold, split){
     }
 
 
-    # Wraper para utilizar con lapply y vectorizar el kfold
+    # Wraper to use with lapply and vectorize the kfold
     wrapper <- function(index, data = train, k = k){
-      # Entrenamos o modelo para index[[i]]
+      # Training of the model for index[[i]]
       model <- class::knn(train[-index, -(p)],
                    train[index, -(p)],
                    train[-index, (p)],
@@ -43,7 +43,7 @@ kNN <- function(train, test, kfold, split){
       accuracy.each.k[i] <- mean(unlist(knnfold))
     }
 
-    # Escollemos o k.optimo
+    # We choose the optimal k
     k.opt <- k[which.max(accuracy.each.k)]
 
     accuracy.kfold <- 100 * accuracy.each.k[which.max(accuracy.each.k)]

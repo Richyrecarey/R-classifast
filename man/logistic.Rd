@@ -12,7 +12,7 @@ logistic(train, test, kfold, split, cv.iter, formula)
 \item{test}{A number.}
 }
 \value{
-The sum of \code{x} and \code{y}.
+Multinomial log-linear model for \code{x} and \code{y} (via neural networks).
 }
 \description{
 Apply logistic function to the data

@@ -1,5 +1,5 @@
 #' Compare different classification methods on multivariate data
-#' Manuel Vaamonde
+#'
 #'
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
@@ -7,11 +7,13 @@
 #' @param prob Percentage p for the split train-test data. (1-prob)% is used for testing.
 #' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 #'
-#'   - "log": Logistic or multinomial linear logistic regression
+#'   - "log": Logistic or multinomial linear logistic regression via neural networks
 #'
 #'   - "svm": Support Vector Machines with Radial Kernel
 #'
 #'   - "knn": kNN with cross-validation choosing of K
+#'
+#'   - "rforest": Random Forest
 #'
 #'   - "simple": Trains "log", "svm" and "knn".
 #'
@@ -29,7 +31,7 @@
 classifast <- function(x, y,
                        prob = 0.65, method = c("simple"),
                        kfold = floor(nrow(x) / 15),
-                       cv.iter = 1, timing = TRUE){
+                       cv.iter = 1, timing = FALSE){
   ##################### CHECK & TWEAK COMPATIBILITY OF INPUT ##################
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
@@ -44,15 +46,15 @@ classifast <- function(x, y,
   # Needed variables throughout the function:
   n <- nrow(x)
   p <- ncol(x)
-
   if(timing == TRUE){
     # ----------- Time Prediction
     # Predicted time, given "n" and "p" and the methods available
     # M.logistic: (p*6 + n*0.05) / 1000 seconds (fitted model:lm(t~p+n))
-    time.mlog =  (p * 6 + .05 * n) / 1000
+    #time.mlog =  (p * 6 + .05 * n) / 1000
 
-    time = time.mlog
-    message("The expected computation time is ", time, " s")
+    #time = time.mlog
+    #message("The expected computation time is ", time, " s")
+    print("timing is not currently available")
   }
 
   # In case "y" is a data.frame, modify it accordingly
@@ -101,7 +103,7 @@ classifast <- function(x, y,
   # on the "x" data.frame, keeping "y" the whole time.
   train.n <- floor(prob * n)
 
-  # Indexex for the train set
+  # Indexes for the train set
   train.i <- sample(n, train.n)
 
   # Indexes for the test set
@@ -174,6 +176,18 @@ classifast <- function(x, y,
 
   ##############################################################
 
+  ########################### RANDOM FORESTS ############################
+  if ("rforest" %in% method){
+    model <- RForest(train = x.train,
+                     test = x.test,
+                     kfold = kfold,
+                     split = split)
+    output$rforest <- model
+  }
+
+  ##############################################################
+
+
   ############################# EXTRA INFO #####################
   # Extra info from the classifiers that may be needed
   # for further methods
@@ -190,10 +204,10 @@ classifast <- function(x, y,
 
   invisible(structure(output,
                       class = "classifast"))
-
-
-
 }
+
+
+
 
 
 #' Summary method for the object with class "classifast"
@@ -234,7 +248,7 @@ summary.classifast <- function(x){
                         e3 = accuracy.train)
   # Names for each column
   colnames(results) <- c("Method",
-                         "kf %",
+                         "k-fold %",
                          "Test %",
                          "Train %")
 

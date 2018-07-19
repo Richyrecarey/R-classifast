@@ -5,7 +5,7 @@
 \title{Compare different classification methods on multivariate data}
 \usage{
 classifast(x, y, prob = 0.65, method = c("simple"),
-  kfold = floor(nrow(x)/15), cv.iter = 1, timing = TRUE)
+  kfold = floor(nrow(x)/15), cv.iter = 1, timing = FALSE)
 }
 \arguments{
 \item{x}{Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)}
@@ -16,11 +16,13 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 
 \item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 
-  - "log": Logistic or multinomial linear logistic regression
+  - "log": Logistic or multinomial linear logistic regression via neural networks
 
   - "svm": Support Vector Machines with Radial Kernel
 
   - "knn": kNN with cross-validation choosing of K
+
+  - "rforest": Random Forest
 
   - "simple": Trains "log", "svm" and "knn".
 

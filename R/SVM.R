@@ -1,8 +1,8 @@
-#' Apply knn algorithm
+#' Apply svm algorithm
 #'
 #' @param train Data frame with train data
 #' @param test A number.
-#' @return The sum of \code{x} and \code{y}.
+#' @return Support Vector Machine model for \code{x} and \code{y}.
 #' @examples
 #' none
 #' @importFrom e1071 tune
@@ -36,7 +36,7 @@ SVM <- function(train, test, kfold){
 
   accuracy.train <- mean(predict(best.model, train[, -p]) == train[[p]]) * 100
 
-  # Modelo completo en t
+  # Complete model in t
   data <- rbind(train, test)
   model <- e1071::svm(data[, -p],
                       data[[p]],

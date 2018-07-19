@@ -2,7 +2,7 @@
 % Please edit documentation in R/kNN.R
 \name{kNN}
 \alias{kNN}
-\title{Apply knn algorithm}
+\title{Apply kNN algorithm}
 \usage{
 kNN(train, test, kfold, split)
 }
@@ -12,10 +12,10 @@ kNN(train, test, kfold, split)
 \item{test}{A number.}
 }
 \value{
-The sum of \code{x} and \code{y}.
+K-Nearest Neighbours model for \code{x} and \code{y}.
 }
 \description{
-Apply knn algorithm
+Apply kNN algorithm
 }
 \examples{
 none

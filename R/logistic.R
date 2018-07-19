@@ -2,7 +2,7 @@
 #'
 #' @param train Data frame with train data
 #' @param test A number.
-#' @return The sum of \code{x} and \code{y}.
+#' @return Multinomial log-linear model for \code{x} and \code{y} (via neural networks).
 #' @examples
 #' none
 #' @importFrom nnet multinom
