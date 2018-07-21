@@ -15,7 +15,9 @@ logistic <- function(train, test, kfold, split, cv.iter, formula){
   p <- ncol(train)
 
   # Check if this is a binary problem
-  if(length(unique(train[, p])) == 2){
+  if(1 == 2){
+    # Use this as the condition when using log
+    length(unique(train[, p])) == 2
     # Add logistic regression
     print("Binary Logistic not yet developed")
 

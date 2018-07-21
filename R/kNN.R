@@ -11,35 +11,40 @@ kNN <- function(train, test, kfold, split){
 
     p <- ncol(train)
     n <- nrow(train)
-
+    # How many actual registers are we gonna have when trainning with kfold?
+    n.kfold <- length(split[[1]])
     # This function itself will calculate
     # Posible values of k
-    if(n<100){
-      k = seq(1, 15)
+    if(n.kfold<30){
+      k = seq(1, floor(n.kfold / 2))
     } else {
-      k = seq.int(max(floor(sqrt(n) - log(n)^1.6), 1),
-                  min(floor(sqrt(n) + log(n)^1.6), 2*sqrt(n)),
-                  by = floor(log(n)))
+      k = seq.int(max(floor(sqrt(n.kfold) - log(n.kfold)^1.6), 1),
+                  min(floor(sqrt(n.kfold) + log(n.kfold)^1.6), 2*sqrt(n.kfold)),
+                  by = floor(log(n.kfold)))
     }
 
 
     # Wraper to use with lapply and vectorize the kfold
     wrapper <- function(index, data = train, k = k){
       # Training of the model for index[[i]]
+      # We train with everything but the index "index"
       model <- class::knn(train[-index, -(p)],
                    train[index, -(p)],
                    train[-index, (p)],
                    k)
+      # We check the accuracy predicting the data on the index "index"
+      # i.e., the only one we left out of the training
       accuracy <- mean(train[index, p] == model)
     }
 
     # Initialization of reults for each k
     accuracy.each.k <- numeric(length = length(k))
 
-    # Accuracy kfold para cada k posible
+    # Accuracy kfold for each posible k
     for (i in seq_along(k)){
-
+      # For each k, we do cross validation to estimate kfold accuracy
       knnfold <- lapply(split, wrapper, data = train, k = k[i])
+      # And, for each k, we put that estimated value onto the following vector
       accuracy.each.k[i] <- mean(unlist(knnfold))
     }
 

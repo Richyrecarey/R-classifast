@@ -12,7 +12,7 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 
 \item{y}{A factor with the labels of the rows of x}
 
-\item{prob}{Percentage p for the split train-test data. (1-prob)% is used for testing.}
+\item{prob}{Percentage p for the split train-test data. (1-prob)\% is used for testing.}
 
 \item{method}{Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 
@@ -24,7 +24,7 @@ classifast(x, y, prob = 0.65, method = c("simple"),
 
   - "rforest": Random Forest
 
-  - "simple": Trains "log", "svm" and "knn".
+  - "simple": Trains "log", "svm", "knn" and "rforest".
 
   - "all": All implemented classifiers (time consuming)}
 

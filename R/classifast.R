@@ -6,7 +6,7 @@
 #'
 #' @param x Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)
 #' @param y A factor with the labels of the rows of x
-#' @param prob Percentage p for the split train-test data. (1-prob)% is used for testing.
+#' @param prob Percentage p for the split train-test data. (1-prob)\% is used for testing.
 #' @param method Vector of the methods wanted. By default, "simple" gives you various lineal classifiers. Other possibilities are:
 #'
 #'   - "log": Logistic or multinomial linear logistic regression via neural networks
@@ -17,7 +17,7 @@
 #'
 #'   - "rforest": Random Forest
 #'
-#'   - "simple": Trains "log", "svm" and "knn".
+#'   - "simple": Trains "log", "svm", "knn" and "rforest".
 #'
 #'   - "all": All implemented classifiers (time consuming)
 #'
@@ -32,16 +32,35 @@
 
 classifast <- function(x, y,
                        prob = 0.65, method = c("simple"),
-                       kfold = floor(nrow(x) / 15),
+                       kfold = ifelse(nrow(x) < 100, floor(nrow(x) / 15), 10),
                        cv.iter = 1, timing = FALSE){
   ##################### CHECK & TWEAK COMPATIBILITY OF INPUT ##################
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
   if(method == "simple"){
-    method = c("log", "knn", "svm")
+    method = c("log", "knn", "svm", "rforest")
   } else if (method == "all"){
-    method = c("log", "knn", "svm")
+    method = c("log", "knn", "svm", "rforest")
   }
+
+
+  # Basic checking
+  # Prob
+  if (prob > 1 | prob < 0){
+    stop("The number prob has to be a probability bewteen 0 and 1")
+  }
+
+  # Erasing Na's
+  na.bye <- complete.cases(x)
+  x <- x[na.bye,]
+
+    # In case "y" is a data.frame, modify it accordingly
+    if(is.data.frame(y)){
+     y <- y[[1]]
+    }
+  # Erasing na from the labels
+  y <- y[na.bye]
+
 
   # Change the input x and y accordingly
 
@@ -59,11 +78,7 @@ classifast <- function(x, y,
     print("timing is not currently available")
   }
 
-  # In case "y" is a data.frame, modify it accordingly
-  if(is.data.frame(y)){
-    y <- y[[1]]
-  }
-
+  #
   # Change "y" to factor. If "y" was a factor inside the data.frame,
   # y[[1]] will keep being a "factor", so:
   if (!is.factor(y)){
@@ -78,6 +93,11 @@ classifast <- function(x, y,
   # If "x" is a matrix, we turn it into d.f.
   if(class(x) == "matrix"){
     x <- data.frame(x)
+  }
+
+  # We turn the cols into numeric vectores, NO FACTORS
+  for (i in 1:p){
+    x[[i]] <- as.numeric(x[[i]])
   }
 
   # Creation of several character vectors needed
@@ -307,8 +327,8 @@ predict.classifast <- function(x, newdata, type = NULL, cor = TRUE){
   }
 
   # More correlation:
-  t1 <- table(predictions[], knn)
-
+  t1 <- table(predictions[1,], predictions[2, ])
+  cramer.v(t1)
 
 
 
