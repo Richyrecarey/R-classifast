@@ -38,16 +38,19 @@ output <- classifast(x = iris[-5], y = iris[5], method = "simple")
 # Show retults of chosen methods
 summary(output)
 ```
-And it should look somehow like this:
+And the output should look somehow like this:
 
 ```
  k-fold accuracy was approximated using 10-fold validation 
  
  Accuracy (%) of the diferent methods used: 
  
-  Method     kf %   Test % Train %
-1    log    96.66    92.45     100
-2    svm    95.52    92.54    99.7
+        Method     kf %   Test % Train %
+1          log    96.66    92.45     100
+2          svm    65.92    62.54    99.7
+3          knn    75.51    72.54    94.3
+4 RandomForest    84.72    82.54    92.4
+
 ```
 
 
