@@ -74,7 +74,8 @@ kNN <- function(train, test, kfold, split){
   # The return:
   # Most important part: It must be the same in each method
   # Same structure:
-  return(list(accuracy.kfold = accuracy.kfold,
+  return(list(model = model,
+              accuracy.kfold = accuracy.kfold,
               accuracy.test = accuracy.test,
               accuracy.train = accuracy.train,
               labels.test = pred.test))

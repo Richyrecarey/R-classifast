@@ -163,12 +163,24 @@ classifast <- function(x, y,
   # Both options, for logistic and multinomial logistic regression
   # are inside the function "logistic.R"
   if("log" %in% method){
-    model <- logistic(train = x.train,
-                      test = x.test,
-                      kfold = kfold,
-                      split = split,
-                      cv.iter = cv.iter,
-                      formula = formula)
+    #tryCatch returns the value of the expresion at the first argument if there is no error it
+    #If there is an error, it returns the list correspondent to the second argument
+    model <- tryCatch(logistic(train = x.train,
+                               test = x.test,
+                               kfold = kfold,
+                               split = split,
+                               cv.iter = cv.iter,
+                               formula = formula),
+                      error = function(e) return(list("Error",
+                                                      conditionCall(e),
+                                                      conditionMessage(e))))
+
+    #Custom error message
+    if (model[1] == "Error") {
+      stop(c("Error in Multinomial Log-linear fitting:    ",
+             model[[2]], " - ", model[[3]]))
+    }
+
 
     # We add the list of the model, if selected, to the output
     # list "output" that has lists with each model.
@@ -177,10 +189,20 @@ classifast <- function(x, y,
   }
   ########################### kNN ############################
   if ("knn" %in% method){
-    model <- kNN(train = x.train,
-                      test = x.test,
-                      kfold = kfold,
-                      split = split)
+    model <- tryCatch(kNN(train = x.train,
+                          test = x.test,
+                          kfold = kfold,
+                          split = split),
+                      error = function(e) return(list("Error",
+                                                      conditionCall(e),
+                                                      conditionMessage(e))))
+
+    #Custom error message
+    if (model[1] == "Error") {
+      stop(c("Error in k-Nearest-Neighbours fitting:    ",
+             model[[2]], " - ", model[[3]]))
+    }
+
     output$knn <- model
   }
 
@@ -190,9 +212,20 @@ classifast <- function(x, y,
   ########################### SVM ############################
   # Note: Split is automaticly done inside SVM
   if ("svm" %in% method){
-    model <- SVM(train = x.train,
-                 test = x.test,
-                 kfold = kfold)
+
+    model <- tryCatch(SVM(train = x.train,
+                          test = x.test,
+                          kfold = kfold),
+                      error = function(e) return(list("Error",
+                                                      conditionCall(e),
+                                                      conditionMessage(e))))
+
+    #Custom error message
+    if (model[1] == "Error") {
+      stop(c("Error in Support Vector Machine fitting:    ",
+             model[[2]], " - ", model[[3]]))
+    }
+
     output$svm <- model
   }
 
@@ -200,10 +233,21 @@ classifast <- function(x, y,
 
   ########################### RANDOM FORESTS ############################
   if ("rforest" %in% method){
-    model <- RForest(train = x.train,
-                     test = x.test,
-                     kfold = kfold,
-                     split = split)
+
+    model <- tryCatch(RForest(train = x.train,
+                          test = x.test,
+                          kfold = kfold,
+                          split = split),
+                      error = function(e) return(list("Error",
+                                                      conditionCall(e),
+                                                      conditionMessage(e))))
+
+    #Custom error message
+    if (model[1] == "Error") {
+      stop(c("Error in Random Forest fitting:    ",
+             model[[2]], " - ", model[[3]]))
+    }
+
     output$rforest <- model
   }
 
