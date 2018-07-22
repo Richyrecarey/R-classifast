@@ -18,7 +18,9 @@ Given multivariate data in a matrix-like objet `x` (rows are observations, colum
 
 * `method = "log"`: It will train binary or multinomial logistic regression, as needed. <br />
 * `method = "svm"`: It will train Radial SVM. <br />
-* `method = "simple"`: It's the same as `method = c("log", "svm")` <br />
+* `method = "knn"`: It will train the knn algorithm. <br />
+* `method = "RandomForest"`: It will train Random Forest. <br />
+* `method = "simple"`: It's the same as `method = c("log", "svm", "knn", "RandomForest)` <br />
 * More methods are under development <br />
 
 
