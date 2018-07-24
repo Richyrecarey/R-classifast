@@ -27,7 +27,9 @@ Given multivariate data in a matrix-like objet `x` (rows are observations, colum
 All the options and parameters available to tweak are available at `help(classifast)`.
 
 
-Once trained, `classifast()` will return an object of class `classifast`, which has several methods implemented:
+Once trained, `classifast()` will return an object of class `classifast`, which has several implemented methods/functions:
+
+## Implemented methods
 
 ### summary.classifast()
 
