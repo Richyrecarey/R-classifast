@@ -1,6 +1,6 @@
 ![alt text](https://image.ibb.co/nHb3Jd/Screenshot_from_2018_07_18_20_52_59.png)
 
-The R package `classifast` is a side project that my friend [Manuel](https://github.com/MVaamonde "Manuel's GitHub profile") and I are starting. Basicaly, the main goal is to make a function that, given multivariate labeled data, gives you a quick overview of which classifiers are the best for your problem (based on several error criterious).
+The R package `classifast` is a side project that my friend [Manuel](https://github.com/MVaamonde "Manuel's GitHub profile") and I are starting. Basically, the main goal is to make a function that, given multivariate labeled data, gives you a quick overview of which classifiers are the best for your problem (based on several accuracy criterious). Afterwards, the `predict.classifast()` method lets you predict using several techniques such as Stacking, weighted voting, etc.
 
 This minimal package is intended to be a project to both enhance our R skills and to make (hopefully) a usefull tool for Data Scientists. All help and feedback will be highly appreciated, so feel free to contact me on <richyrecarey@gmail.com> to get involved in the project.
 
