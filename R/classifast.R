@@ -34,6 +34,7 @@ classifast <- function(x, y,
                        prob = 0.65, method = c("simple"),
                        kfold = ifelse(nrow(x) < 100, floor(nrow(x) / 15), 10),
                        cv.iter = 1, timing = FALSE){
+
   ##################### CHECK & TWEAK COMPATIBILITY OF INPUT ##################
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
