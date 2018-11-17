@@ -5,7 +5,8 @@
 \title{Compare different classification methods on multivariate data}
 \usage{
 classifast(x, y, prob = 0.65, method = c("simple"),
-  kfold = floor(nrow(x)/15), cv.iter = 1, timing = FALSE)
+  kfold = ifelse(nrow(x) < 100, floor(nrow(x)/15), 10), cv.iter = 1,
+  timing = FALSE)
 }
 \arguments{
 \item{x}{Data frame or matrix with multivariate data with n observations (rows) and p variables (cols)}

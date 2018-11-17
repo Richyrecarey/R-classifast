@@ -36,6 +36,7 @@ classifast <- function(x, y,
                        cv.iter = 1, timing = FALSE){
 
   ##################### CHECK & TWEAK COMPATIBILITY OF INPUT ##################
+
   # Proper changes for methods: in "method" we have the methods wanted
   # to be computed. If "simple" is selected (default), we compute:
   if(method == "simple"){
@@ -327,6 +328,9 @@ summary.classifast <- function(x){
   print(results)
 }
 
+# setMethod("summary", "classifast", summary.classifast)
+
+
 
 #' Information about "classifast" implementation
 #'
@@ -375,6 +379,8 @@ predict.classifast <- function(x, newdata, type = NULL, cor = TRUE){
   t1 <- table(predictions[1,], predictions[2, ])
   cramer.v(t1)
 
+
+# setMethod("predict", "classifast", predict.classifast)
 
 
 
